@@ -1,7 +1,7 @@
 from os import path
 from wordcloud import WordCloud
 import pandas as pd
-
+from tools import open_csv
 
 def generate_worldcloud(text):
     """Generates a wordcloud for a given text."""
@@ -12,12 +12,7 @@ def generate_worldcloud(text):
     image = wordcloud.to_image()
     image.show()
 
-
-# Read file
-d = path.dirname(__file__)
-train_set_path = path.join(d, './data_sets/train_set.csv')
-df = pd.read_csv(train_set_path, sep='\t')
-
+df = open_csv()
 for category in df.Category.unique():
     text = df.loc[df['Category'] == category]
     generate_worldcloud(text.to_string())

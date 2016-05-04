@@ -4,3 +4,4 @@ SciPy>=0.9
 Image>=1.1.7
 pandas
 scikit-learn>=0.17.1
+matplotlib
