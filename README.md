@@ -4,5 +4,5 @@ Ted assignment 1
 
 Installing requirements:
 ```
-pip intall -r requirements.txt
+pip install -r requirements.txt
 ```
