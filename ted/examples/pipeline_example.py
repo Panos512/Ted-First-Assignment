@@ -12,7 +12,11 @@ from sklearn.grid_search import GridSearchCV
 from sklearn import metrics
 
 #Read Data
-from tools import open_csv
+def open_csv(relative_path='../data_sets/train_set.csv'):
+    d = path.dirname(__file__)
+    train_set_path = path.join(d, relative_path)
+    df = pd.read_csv(train_set_path, sep='\t')
+    return df
 
 df = open_csv()
 le = preprocessing.LabelEncoder()
@@ -23,7 +27,7 @@ vectorizer=CountVectorizer(stop_words='english')
 transformer=TfidfTransformer()
 svd=TruncatedSVD(n_components=10, random_state=42)
 clf=SGDClassifier()
-
+import ipdb#; ipdb.set_trace()
 pipeline = Pipeline([
     ('vect', vectorizer),
     ('tfidf', transformer),
@@ -33,5 +37,6 @@ pipeline = Pipeline([
 #Simple Pipeline Fit
 pipeline.fit(X_train,Y_train)
 #Predict the train set
+ipdb.set_trace()
 predicted=pipeline.predict(X_train)
 print(metrics.classification_report(df['Category'], le.inverse_transform(predicted)))
