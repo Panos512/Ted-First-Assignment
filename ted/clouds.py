@@ -15,4 +15,4 @@ def generate_worldcloud(text):
 df = open_csv()
 for category in df.Category.unique():
     text = df.loc[df['Category'] == category]
-    generate_worldcloud(text.to_string())
+    generate_worldcloud(text.Content.to_string())
