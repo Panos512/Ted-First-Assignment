@@ -25,9 +25,8 @@ Y_train=le.transform(df["Category"])
 X_train=df['Content']
 vectorizer=CountVectorizer(stop_words='english')
 transformer=TfidfTransformer()
-svd=TruncatedSVD(n_components=10, random_state=42)
+svd=TruncatedSVD(n_components=10)
 clf=SGDClassifier()
-import ipdb#; ipdb.set_trace()
 pipeline = Pipeline([
     ('vect', vectorizer),
     ('tfidf', transformer),
@@ -37,6 +36,5 @@ pipeline = Pipeline([
 #Simple Pipeline Fit
 pipeline.fit(X_train,Y_train)
 #Predict the train set
-ipdb.set_trace()
 predicted=pipeline.predict(X_train)
 print(metrics.classification_report(df['Category'], le.inverse_transform(predicted)))
