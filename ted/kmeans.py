@@ -61,7 +61,7 @@ def prepare_data(dataset):
     """Converts text data to 2d vectors. """
     print "INFO: Preparing Data."
     vectorizer = CountVectorizer(stop_words='english')
-    svd = TruncatedSVD(n_components=2)
+    svd = TruncatedSVD(n_components=40)
     content = dataset['Content']
     transformer=TfidfTransformer()
     pipeline = Pipeline([
