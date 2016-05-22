@@ -5,7 +5,6 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.decomposition import TruncatedSVD
 from sklearn.pipeline import Pipeline
-from sklearn.naive_bayes import GaussianNB
 from sklearn import preprocessing, metrics, cross_validation
 
 from nltk import PorterStemmer
@@ -53,20 +52,23 @@ def preprocess_data(df):
 
 def pipeline_data(X, df):
     """Insert docstring."""
+    # from sklearn.feature_extraction.text import TfidfVectorizer
     pipeline = Pipeline([
         ('vec', CountVectorizer(max_features=4096, stop_words='english')),
         ('transformer', TfidfTransformer()),
+        #('vec', TfidfVectorizer(min_df=3, max_df=.95, stop_words='english')),
         ('svd', TruncatedSVD(n_components=40))
+        #('pr', preprocessing.MinMaxScaler(feature_range=(0, 1), copy=True))
     ])
     le = preprocessing.LabelEncoder()
     y_train = le.fit_transform(df["Category"])
+
     X = pipeline.fit_transform(X, y_train)
     return X, y_train, le
 
 
 def create_classifier(df, X, X_Original, y_train, le, algorithm):
     """Insert docstring."""
-    import ipdb; ipdb.set_trace()
     calculate_accuracy(X_Original, y_train, algorithm)
     algorithm.fit(X, y_train)
     predicted = algorithm.predict(X)
@@ -80,10 +82,18 @@ def classify_data(algorithm):
     path = '/Users/Panos/.virtualenvs/ted/src/ted/data_sets/test_set.csv'
     dft = pd.read_csv(path, sep='\t', encoding='utf-8')
     X = preprocess_data(dft)
+    # pipeline = Pipeline([
+    #     ('vec', CountVectorizer(max_features=4096, stop_words='english')),
+    #     ('transformer', TfidfTransformer()),
+    #     ('svd', TruncatedSVD(n_components=40))
+    # ])
+    #from sklearn.feature_extraction.text import TfidfVectorizer
     pipeline = Pipeline([
         ('vec', CountVectorizer(max_features=4096, stop_words='english')),
         ('transformer', TfidfTransformer()),
+        #('vec', TfidfVectorizer(min_df=3, max_df=.95, stop_words='english')),
         ('svd', TruncatedSVD(n_components=40))
+        #('pr', preprocessing.MinMaxScaler(feature_range=(0, 1), copy=True))
     ])
     X = pipeline.fit_transform(X)
     predicted = algorithm.predict(X)
@@ -97,19 +107,48 @@ df = pd.read_csv(path, sep='\t', encoding='utf-8')
 X_Original = preprocess_data(df)
 X = X_Original
 X, y_train, le = pipeline_data(X, df)
+
+
+# from sklearn.naive_bayes import MultinomialNB
+# print "INFO: Multinomial Classification"
+# clf = MultinomialNB()
+# import ipdb; ipdb.set_trace()
+# algorithm = create_classifier(df, X, X_Original, y_train, le, clf)
+# ipdb.set_trace()
+# classify_data(algorithm)
+# ipdb.set_trace()
+
+from sklearn.naive_bayes import GaussianNB
+print "INFO: GaussianNB Classification"
 clf = GaussianNB()
 algorithm = create_classifier(df, X, X_Original, y_train, le, clf)
 classify_data(algorithm)
-# clf.fit(X)
-#predicted = pipeline.predict(X)
 
-# print(metrics.classification_report(
-#     df['Category'], le.inverse_transform(predicted)))
-# path = '/Users/Panos/.virtualenvs/ted/src/ted/data_sets/test_set.csv'
-# dft = pd.read_csv(path, sep='\t')
-# X_test = dft['Content']
-# predicted = pipeline.predict(X_test)
-# headers = ['id', 'Category']
-# results = pd.DataFrame(
-#     zip(dft.Id, le.inverse_transform(predicted)), columns=headers)
-# results.to_csv('outputs/testSet_categories.csv')
+from sklearn.naive_bayes import BernoulliNB
+print "INFO: Binomial BernoulliNB Classification"
+clf = BernoulliNB()
+algorithm = create_classifier(df, X, X_Original, y_train, le, clf)
+classify_data(algorithm)
+
+from sklearn.neighbors import KNeighborsClassifier
+print "INFO: KNeighbors Classification"
+clf = KNeighborsClassifier(n_neighbors=3)
+algorithm = create_classifier(df, X, X_Original, y_train, le, clf)
+classify_data(algorithm)
+
+
+from sklearn.ensemble import RandomForestClassifier
+print "INFO: Random Forest Classification"
+clf = RandomForestClassifier(n_estimators=10)
+algorithm = create_classifier(df, X, X_Original, y_train, le, clf)
+classify_data(algorithm)
+
+from sklearn.svm import SVC
+print "INFO: SVM Classification"
+clf = SVC()
+algorithm = create_classifier(df, X, X_Original, y_train, le, clf)
+classify_data(algorithm)
+
+
+
+minmax_scale = preprocessing.MinMaxScaler(feature_range=(0, 1), copy=True)
