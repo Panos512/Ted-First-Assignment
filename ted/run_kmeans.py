@@ -15,10 +15,11 @@ df = open_csv()
 data = prepare_data(df)
 
 if args.plot:
+    print "Make sure that TruncatedSVD n_components is set to 2."
     import matplotlib.pyplot as plt
     for point in data:
         plt.scatter(point[0],point[1],color = 'green')
-    plt.savefig("data.png")
+    plt.savefig("./ted/outputs/pre_clustering_data.png")
 
 
 x = kmeans(data=data, clusters_number=5)
@@ -31,14 +32,34 @@ color={
 3:'black',
 4:'yellow'}
 
+categorys_map={
+'Politics': 0,
+'Business': 1,
+'Film': 2,
+'Technology': 3,
+'Football': 4
+}
 
+results = []
 for index, cluster in enumerate(x):
-    print "Cluster " + str(index)
     if args.plot:
         for point in cluster:
             plt.scatter(point[0],point[1],color = color[index])
     res = points_to_category(points=cluster, data=data, df=df)
-    print pd.value_counts(res, normalize=True)
+    stats = pd.value_counts(res, normalize=True)
+    cluster_result = [0 for i in range(5)]
+    categories = (stats.index)
+    for index, category in enumerate(stats):
+        cluster_result[categorys_map[categories[index]]] = category
+    results.append(cluster_result)
 
 if args.plot:
-    plt.savefig("clusters.png")
+    plt.savefig("./ted/outputs/clustered_data.png")
+
+headers = ['Cluster', 'Politics', 'Bussiness', 'Film', 'Technology', 'Football']
+for index, result in enumerate(results):
+    result.insert(0 ,('Cluster '+str(index+1)))
+
+import ipdb; ipdb.set_trace()
+results = pd.DataFrame(results, columns=headers)
+results.to_csv('./ted/outputs/clustering_KMeans.csv', index=False)
