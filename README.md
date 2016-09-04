@@ -1,5 +1,6 @@
-# Ted-First-Assignment
-Ted assignment 1
+# Data-Mining-Techniques-Course-First-Assignment
+
+The 1st assignment for "Data Mining Techniques" course of UoA-DIT
 
 
 Installing requirements:
