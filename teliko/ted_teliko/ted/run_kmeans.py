@@ -19,7 +19,7 @@ if args.plot:
     import matplotlib.pyplot as plt
     for point in data:
         plt.scatter(point[0],point[1],color = 'green')
-    plt.savefig("./ted/outputs/pre_clustering_data.png")
+    plt.savefig("./outputs/pre_clustering_data.png")
 
 
 x = kmeans(data=data, clusters_number=5)
@@ -52,14 +52,13 @@ for index, cluster in enumerate(x):
     for index, category in enumerate(stats):
         cluster_result[categorys_map[categories[index]]] = category
     results.append(cluster_result)
-
+import ipdb; ipdb.set_trace()
 if args.plot:
-    plt.savefig("./ted/outputs/clustered_data.png")
+    plt.savefig("./outputs/clustered_data.png")
 
 headers = ['Cluster', 'Politics', 'Bussiness', 'Film', 'Technology', 'Football']
 for index, result in enumerate(results):
     result.insert(0 ,('Cluster '+str(index+1)))
 
-import ipdb; ipdb.set_trace()
 results = pd.DataFrame(results, columns=headers)
-results.to_csv('./ted/outputs/clustering_KMeans.csv', index=False)
+results.to_csv('./outputs/clustering_KMeans.csv', index=False)

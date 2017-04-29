@@ -6,7 +6,7 @@ Installing requirements:
 ```
 pip install -r requirements.txt
 ```
-Όλα τα script εχουν σχεδιαστεί για να τρέχουν απο το αρχικό directory (αυτο στο οποίο βρίσκεται και το README.md)
+Όλα τα script εχουν σχεδιαστεί για να τρέχουν απο το directory που βρισκονται.
 
 Δημιουργία WordCloud:
 
@@ -16,7 +16,7 @@ pip install -r requirements.txt
 	* Τα wordclouds αποθηκεύονται στον φάκελο outputs.
 	* Για την δημιουργία των wordclouds χρησιμοποιήθηκε μόνο το Content των άρθρων.
 
-K-Means:
+K-Means our version:
 
 	* Εκτελείται απο το αρχείο ted/run_kmeans.py .
 	* Δίνοντας στο run_kmeans το argument -p δημιουργούνται τα plots και 		  αποθηκεύονται.
@@ -29,7 +29,11 @@ K-Means:
    		    svd = TruncatedSVD(n_components=40)
 
  		    transformer=TfidfTransformer()
-	* Δεν προλάβαμε να βελτιστοποιήσουμε την διαδικασία μέτρησης αποτελεσμάτων με αποτέλεσμα να εχει παραμείνει η αρχική μας (προφανώς λανθασμένη) προσέγγιση. Με βάση την προσέγγιση αυτή χρησιμοποιώντας διπλο mapping καταλήγουμε στην κατηγορία καθε στοιχείου του καθε cluster.
+
+K-Means sklearn version:
+
+    * Έχουμε επίσης και μια υλοποίηση που χρησιμοποιεί τον K-Means αλγόριθμο που προφέρει η βιβλιοθήκη scikit-learn.
+      Η υλοποίηση αυτή τρεχει με το σκριπτ skKMeans.py και παράγει ενα επιπλέον csv αρχείο με τα αποτελέσματά του.
 
 Classification:
 
@@ -49,4 +53,8 @@ Classification:
 
 	  Τα 40 components επιλέχθηκαν μετα απο πειραματισμό και παρατήρηση των scores των classification αλγορίθμων.
 	* Για τους Naive-Bayes αλγορίθμους αφαιρέθηκε ο TruncatedSVD διότι παρήγαγε αρνητικές τιμές που επηρρέαζαν αρνητικά τους αλγορίθμους.
-	 
+	* Εχουμε υλοποιήσει τον αλγόριθμο ΚΝΝ αλλα έχουμε κρατήσει και την υλοποίηση του scikit-learn για λόγουσ σύγκρισης.
+
+```
+ΤΑ METRICS precision, recall, f1-score, support υπολογίζονται και τυπώνονται για όλους τους αλγορίθμους κατα την διάρκεια της εκτέλεσης του script classifications.py
+```

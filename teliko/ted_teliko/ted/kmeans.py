@@ -70,7 +70,7 @@ def prepare_data(dataset):
     return X
 
 def points_to_category(points, data, df):
-    """Maps given set of 2d points to original category."""
+    """Maps given set of points to original category."""
     category=df.Category
     categories = []
 
