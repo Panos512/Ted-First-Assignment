@@ -68,7 +68,7 @@ def calculate_score(X, y_train, algorithm):
     ])
     y = y_train
     y_train = preprocessing.label_binarize(y_train, classes=[0, 1, 2, 3])
-    print cross_validation.cross_val_score(pipeline, X_train, y_train, cv=3, scoring='roc_auc')
+    print cross_validation.cross_val_score(pipeline, X_train, y_train, cv=10, scoring='roc_auc')
 
 def calculate_score_naive_bayes(X, y_train, algorithm):
     """Calculates the scores of a given Naive-Bayes classification algorithm (not using TruncatedSVD)."""
@@ -81,8 +81,7 @@ def calculate_score_naive_bayes(X, y_train, algorithm):
     ])
     y = y_train
     y_train = preprocessing.label_binarize(y_train, classes=[0, 1, 2, 3])
-    import ipdb; ipdb.set_trace()
-    print cross_validation.cross_val_score(pipeline, X_train, y_train, cv=3, scoring='roc_auc')
+    print cross_validation.cross_val_score(pipeline, X_train, y_train, cv=10, scoring='roc_auc')
 
 
 def preprocess_data(df):
@@ -147,10 +146,10 @@ def classify_data(algorithm):
     ])
     X = pipeline.fit_transform(X)
     predicted = algorithm.predict(X)
-    headers = ['id', 'Category']
+    headers = ['Test_Document_ID', 'Predicted_Category']
     results = pd.DataFrame(
         zip(dft.Id, le.inverse_transform(predicted)), columns=headers)
-    results.to_csv('./ted/outputs/testSet_categories.csv', index=False)
+    results.to_csv('./outputs/testSet_categories.csv', index=False)
 
 
 def classify_data_naive_bayes(algorithm):
@@ -163,10 +162,10 @@ def classify_data_naive_bayes(algorithm):
     ])
     X = pipeline.fit_transform(X)
     predicted = algorithm.predict(X)
-    headers = ['id', 'Category']
+    headers = ['Test_Document_ID', 'Predicted_Category']
     results = pd.DataFrame(
         zip(dft.Id, le.inverse_transform(predicted)), columns=headers)
-    results.to_csv('./ted/outputs/testSet_categories.csv', index=False)
+    results.to_csv('./outputs/testSet_categories.csv', index=False)
 
 
 # General pre-processing for all the algorithms
@@ -228,4 +227,4 @@ accuracy_metrics.append(accuracy)
 headers = ['MultinomialNB', 'BernoulliNB', 'KNeighbors', 'RandomForestClassifier', 'SVM']
 accuracy_metrics = [accuracy_metrics]
 results = pd.DataFrame(accuracy_metrics, columns=headers)
-results.to_csv('./ted/outputs/EvaluationMetric_10fold.csv', index=False)
+results.to_csv('./outputs/EvaluationMetric_10fold.csv', index=False)
